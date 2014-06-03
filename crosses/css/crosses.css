@@ -1,0 +1,16 @@
+
+#container{
+	width: 315px;
+	height: 310px;
+	background-color: black;
+	float: left;
+
+}
+.defualt{
+	width: 100px;
+	height: 100px;
+	background-color: grey;
+	float: left;
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
