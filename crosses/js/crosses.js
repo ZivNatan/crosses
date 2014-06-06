@@ -8,120 +8,126 @@ wrongMoveSound.src="soundEffects/wrongMoveSound.mp3";
 winTheGameSound.src="soundEffects/winTheGameSound.mp3";
 gameOverSound.src="soundEffects/gameOverSound.mp3";
 
-var squares= [{isAvailable: true, type:""},{isAvailable: true, typ:""},{isAvailable: true, type:""},
-           {isAvailable: true, type:""}, {isAvailable: true, type:""}, {isAvailable: true, type:""},
-           {isAvailable: true, type:""}, {isAvailable: true, type:""}, {isAvailable: true, type:""}];
+var squares= [{}, {hasntUsed: true, type:""}, {hasntUsed: true, type:""}, {hasntUsed: true, type:""},
+                  {hasntUsed: true, type:""}, {hasntUsed: true, type:""}, {hasntUsed: true, type:""},
+                  {hasntUsed: true, type:""}, {hasntUsed: true, type:""}, {hasntUsed: true, type:""}];
 
-var WinnerStatus= false;
-var turnsIndicator = 0;
+var thereIsAwinner= false;
+var currntPlayer = "x";
 var crosses = {
 
-  changeBackgroundToX: function (squareIndex) {  
-      var squareIndex = squareIndex*1;
-        if (squares[squareIndex].isAvailable == true) {                                        // check if flag is true  
-           document.getElementById(squareIndex).style.backgroundImage="url(css/img/X.jpg)"; // change background 
-        }
+  emptySqureClick: function(squareIndex,currntPlayer){
+      crosses.changeBackground(squareIndex,currntPlayer);
+      crosses.defineSquare(squareIndex,currntPlayer);
+  }, 
+
+  changeBackground: function (squareIndex,currntPlayer) {  
+      if (currntPlayer=="x"){                                         
+        document.getElementById(squareIndex).style.backgroundImage="url(css/img/X.jpg)";
+      } 
+      else{
+        document.getElementById(squareIndex).style.backgroundImage="url(css/img/O.jpg)";
+      }
   },
 
-  changeBackgroundToO: function (squareIndex) {
-      var squareIndex = squareIndex*1;
-        if (squares[squareIndex].isAvailable == true) {           //  if flag is true the  div didnt clicked before
-           document.getElementById(squareIndex).style.backgroundImage="url(css/img/O.jpg)"; // change background         
-        }
+  defineSquare:function(squareIndex,currntPlayer){
+      squares[squareIndex].type = currntPlayer;          
+      squares[squareIndex].hasntUsed = false;  
   },
 
-  changeData:function(squareIndex,player){
-      squares[squareIndex].type = player;          // change type
-      squares[squareIndex].isAvailable = false; //flag false the div cannot be click agian   
-  },
-
-  checkGameStatus: function(){
+  checkIfGameOver: function(currntPlayer){
       setTimeout(function(){
-        crosses.checkRows();
-        crosses.checkColumns();
-        crosses.checkDiagonal();
+        crosses.checkRowsWin(currntPlayer);
+        crosses.checkColumnsWin(currntPlayer);
+        crosses.checkDiagonalWin(currntPlayer);
         crosses.checkTie();
       }, 5);  
   },
 
-  checkRows: function(){
-      var playerType="x";
-        for(var i=0; i<2;i++){      
-          if(    ( (squares[0].type ==playerType) && (squares[1].type == playerType) && (squares[2].type == playerType) ) ||
-                ( (squares[3].type == playerType) && (squares[4].type == playerType) && (squares[5].type == playerType) ) ||
-                ( (squares[6].type == playerType) && (squares[7].type == playerType) && (squares[8].type == playerType) )  ){
-                      winTheGameSound.play();
-                      WinnerStatus= true;
-                      alert(playerType+" is the  winner!");  
-                      location.reload();
-          }
-          playerType="o";
-        }
+  checkRowsWin: function(currntPlayer){  
+      if (    ( (squares[0].type == currntPlayer) && (squares[1].type == currntPlayer) && (squares[2].type == currntPlayer) ) ||
+              ( (squares[3].type == currntPlayer) && (squares[4].type == currntPlayer) && (squares[5].type == currntPlayer) ) ||
+              ( (squares[6].type == currntPlayer) && (squares[7].type == currntPlayer) && (squares[8].type == currntPlayer) )  ){         
+               
+                thereIsAwinner= true;
+                crosses.gameOver(currntPlayer);           
+      }        
   },             
 
-  checkColumns: function(){
-        var playerType="x";
-        for(var i=0; i<2;i++){  
-          if(    ( (squares[0].type == playerType) && (squares[3].type == playerType) && (squares[6].type == playerType) ) ||
-                ( (squares[1].type == playerType) && (squares[4].type == playerType) && (squares[7].type == playerType) ) ||
-                ( (squares[2].type == playerType) && (squares[5].type == playerType) && (squares[8].type == playerType) )  ){
-                      winTheGameSound.play();
-                      WinnerStatus= true;
-                      alert(playerType+ " is the  winner!");
-                      location.reload();
-          }
-          playerType="o";
-        }    
+  checkColumnsWin: function(currntPlayer){
+        if (   ( (squares[0].type == currntPlayer) && (squares[3].type == currntPlayer) && (squares[6].type == currntPlayer) ) ||
+               ( (squares[1].type == currntPlayer) && (squares[4].type == currntPlayer) && (squares[7].type == currntPlayer) ) ||
+               ( (squares[2].type == currntPlayer) && (squares[5].type == currntPlayer) && (squares[8].type == currntPlayer) )  ){
+                      
+                  thereIsAwinner= true;
+                  crosses.gameOver(currntPlayer);              
+          }     
   }, 
 
-  checkDiagonal: function(){
-        var playerType="x";
-        for(var i=0; i<2;i++){ 
-          if(   ( (squares[0].type == playerType) && (squares[4].type == playerType) && (squares[8].type == playerType) ) ||
-                ( (squares[2].type == playerType) && (squares[4].type == playerType) && (squares[6].type == playerType) ) ) {
-                      winTheGameSound.play();
-                      WinnerStatus= true;
-                      alert(playerType+ " is the  winner!");
-                      location.reload();
+  checkDiagonalWin: function(currntPlayer){
+        if (   ( (squares[0].type == currntPlayer) && (squares[4].type == currntPlayer) && (squares[8].type == currntPlayer) ) ||
+               ( (squares[2].type == currntPlayer) && (squares[4].type == currntPlayer) && (squares[6].type == currntPlayer) ) ) {
+                
+                thereIsAwinner= true;                
+                crosses.gameOver(currntPlayer);     
           }
-          playerType="o";
-        }  
+        
+         
   }, 
             
   checkTie: function(){
-       if(    (squares[0].isAvailable == false) && (squares[1].isAvailable == false) &&  (squares[2].isAvailable == false)  &&
-              (squares[3].isAvailable == false) && (squares[4].isAvailable == false) &&  (squares[5].isAvailable == false)  &&
-              (squares[6].isAvailable == false) && (squares[7].isAvailable == false) &&  (squares[8].isAvailable == false) && (WinnerStatus==false)   )
-                {
-                      gameOverSound.play();
-                      alert("Ohhhh its a tie!");
-                      location.reload();
-             }
+       if(    (squares[0].hasntUsed == false) && (squares[1].hasntUsed == false) &&  (squares[2].hasntUsed == false) &&
+              (squares[3].hasntUsed == false) && (squares[4].hasntUsed == false) &&  (squares[5].hasntUsed == false) &&
+              (squares[6].hasntUsed == false) && (squares[7].hasntUsed == false) &&  (squares[8].hasntUsed == false) && (thereIsAwinner==false)   ){
+              currntPlayer = "its a tie";
+              crosses.gameOver(currntPlayer);
+        }
 
-  }
+  },
+
+  gameOver: function(currntPlayer){
+
+    if (currntPlayer == "its a tie"){
+        gameOverSound.play();
+        alert("Ohhhh its a tie!");
+        location.reload();
+
+    }else{
+        winTheGameSound.play();
+        thereIsAwinner= true;
+        alert(currntPlayer + " is the winner!");
+        location.reload();
+    }
+
+  },
+
+  changePlayerTurn:function(currntPlayer){
+      if (currntPlayer = "o"){
+          currntPlayer = "x";
+      }else{
+          currntPlayer = "o";
+      }
+  },
+
+  init: function(squareIndex){
+        $("div").each(function(squareIndex) { 
+            document.getElementById(squareIndex).onclick = function() {
+                if (squares[squareIndex].hasntUsed == true){   
+                    crosses.emptySqureClick (squareIndex,currntPlayer);
+                    crosses.checkIfGameOver();
+                    crosses.changePlayerTurn(currntPlayer);
+                }
+            };
+        });         
+  } 
+  
 
 };
  
 $(document).ready(function(){
-    for(var squareIndex=0;squareIndex<9;squareIndex++){
-      $("div").each(function(squareIndex, value) { 
-        document.getElementById(squareIndex).onclick = function() {
-            if(squares[squareIndex].isAvailable == true){   
-               if (turnsIndicator%2==0){
-                     crosses.changeBackgroundToX(squareIndex);
-                     crosses.changeData(squareIndex,"x");  
-                }
-                else{
-                    crosses.changeBackgroundToO(squareIndex);
-                    crosses.changeData(squareIndex,"o");
-                }
-                crosses.checkGameStatus();
-                turnsIndicator++;
-            }
-        };
-      });  
-    }   
-      
+      for (var squareIndex=1; squareIndex<10; squareIndex++){ 
+        crosses.init(squareIndex);   
+      }
 
   // for(var i =0; i<9; i++){
   //   var index= i;
@@ -135,7 +141,7 @@ $(document).ready(function(){
 
   // document.getElementById("0").onclick = function() {
     
-  //   if(squares[0].isAvailable == true) {   
+  //   if(squares[0].hasntUsed == true) {   
   //     if (turnsIndicator%2==0){
   //       crosses.changeBackgroundToX("0");
   //       crosses.changeData(0,"x");  
@@ -150,7 +156,7 @@ $(document).ready(function(){
   // };
 
   // document.getElementById("1").onclick = function() {
-  //   if(squares[1].isAvailable == true) {       
+  //   if(squares[1].hasntUsed == true) {       
   //     if (turnsIndicator%2==0){
   //       crosses.changeBackgroundToX("1");  
   //       crosses.changeData(1,"x");  
@@ -165,7 +171,7 @@ $(document).ready(function(){
   // };
 
   // document.getElementById("2").onclick = function() {
-  //   if(squares[2].isAvailable == true) {       
+  //   if(squares[2].hasntUsed == true) {       
   //     if (turnsIndicator%2==0){
   //       crosses.changeBackgroundToX("2");
   //       crosses.changeData(2,"x");  
@@ -180,7 +186,7 @@ $(document).ready(function(){
   // };
 
   // document.getElementById("3").onclick = function() {
-  //   if(squares[3].isAvailable == true) {       
+  //   if(squares[3].hasntUsed == true) {       
   //     if (turnsIndicator%2==0){
   //       crosses.changeBackgroundToX("3"); 
   //       crosses.changeData(3,"x"); 
@@ -195,7 +201,7 @@ $(document).ready(function(){
   // };
 
   // document.getElementById("4").onclick = function() {
-  //   if(squares[4].isAvailable == true) {       
+  //   if(squares[4].hasntUsed == true) {       
   //     if (turnsIndicator%2==0){
   //       crosses.changeBackgroundToX("4");
   //       crosses.changeData(4,"x");  
@@ -210,7 +216,7 @@ $(document).ready(function(){
   // };
 
   // document.getElementById("5").onclick = function() {
-  //   if(squares[5].isAvailable == true) {       
+  //   if(squares[5].hasntUsed == true) {       
   //     if (turnsIndicator%2==0){
   //       crosses.changeBackgroundToX("5");
   //       crosses.changeData(5,"x");  
@@ -225,7 +231,7 @@ $(document).ready(function(){
   // };
 
   // document.getElementById("6").onclick = function() {
-  //   if(squares[6].isAvailable == true) {       
+  //   if(squares[6].hasntUsed == true) {       
   //     if (turnsIndicator%2==0){
   //       crosses.changeBackgroundToX("6");
   //       crosses.changeData(6,"x");  
@@ -240,7 +246,7 @@ $(document).ready(function(){
   // };
 
   // document.getElementById("7").onclick = function() {
-  //   if(squares[7].isAvailable == true) {       
+  //   if(squares[7].hasntUsed == true) {       
   //     if (turnsIndicator%2==0){
   //       crosses.changeBackgroundToX("7");
   //       crosses.changeData(7,"x");  
@@ -255,7 +261,7 @@ $(document).ready(function(){
   // };
 
   // document.getElementById("8").onclick = function() {
-  //   if(squares[8].isAvailable == true) {       
+  //   if(squares[8].hasntUsed == true) {       
   //     if (turnsIndicator%2==0){
   //       crosses.changeBackgroundToX("8");
   //       crosses.changeData(8,"x");  
