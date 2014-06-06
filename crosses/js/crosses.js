@@ -1,4 +1,5 @@
 
+
 var wrongMoveSound= new Audio();
 var winTheGameSound= new Audio();
 var gameOverSound= new Audio();
@@ -80,7 +81,7 @@ var crosses = {
                 ( (squares[2].type == playerType) && (squares[4].type == playerType) && (squares[6].type == playerType) ) ) {
                       winTheGameSound.play();
                       WinnerStatus= true;
-                      alert("X is the  winner!");
+                      alert(playerType+ " is the  winner!");
                       location.reload();
           }
           playerType="o";
@@ -100,10 +101,10 @@ var crosses = {
   }
 
 };
-
+ 
 $(document).ready(function(){
-
-  $("div").each(function(squareIndex, value) { 
+    for(var squareIndex=0;squareIndex<9;squareIndex++){
+      $("div").each(function(squareIndex, value) { 
         document.getElementById(squareIndex).onclick = function() {
             if(squares[squareIndex].isAvailable == true){   
                if (turnsIndicator%2==0){
@@ -118,7 +119,9 @@ $(document).ready(function(){
                 turnsIndicator++;
             }
         };
-});
+      });  
+    }   
+      
 
   // for(var i =0; i<9; i++){
   //   var index= i;
@@ -270,3 +273,4 @@ $(document).ready(function(){
 
 
 });
+
