@@ -1,20 +1,44 @@
+header{
+	width: 250px;
+	height: 50px;
+	
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	font-family: impact;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	  text-shadow:1px 1px 0 #FFFF00  , 2px 2px 0 #FF3300 , 1px 1px 0 #A00000  ;  
+    letter-spacing:10px;
+}
+#logo{
+	width:310px;
+	height: 50px;
+	margin: 30px;
+	margin-right: auto;
+	margin-left: auto;
+	padding-left: 400px;
+
+	
+}
 
 #container{
-  width: 306px;
-  height: 305px;
-  background-color: black;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 100px;
+	width: 306px;
+	height: 305px;
+	background-color: black;
+	margin-left: auto;
+	margin-right: auto;
+	/*margin-top: 10px;*/
 
 
 
 }
-.defualt{
-  width: 100px;
-  height: 100px;
-  background-color: #F8F8F8 ;
-  float: left;
-  border: 1px solid black;
+.default{
+	width: 100px;
+	height: 100px;
+	/*background-color: #F8F8F8 ;*/
+	background-color: black;
+	float: left;
+	border: 1px solid #580000 ;
 
 }
