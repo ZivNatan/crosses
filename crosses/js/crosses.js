@@ -12,15 +12,16 @@ var squares= [  {hasntUsed: true, type:""}, {hasntUsed: true, type:""}, {hasntUs
                 {hasntUsed: true, type:""}, {hasntUsed: true, type:""}, {hasntUsed: true, type:""},
                 {hasntUsed: true, type:""}, {hasntUsed: true, type:""}, {hasntUsed: true, type:""} ];
 
+var currntPlayer = "x";
 var thereIsAwinner= false;
 var crosses = {
 
-    emptySqureClick: function(squareIndex,currntPlayer){
-        crosses.changeBackground(squareIndex,currntPlayer);
-        crosses.defineSquare(squareIndex,currntPlayer);
+    emptySqureClick: function(squareIndex){
+        crosses.changeBackground(squareIndex);
+        crosses.defineSquare(squareIndex);
     }, 
 
-    changeBackground: function (squareIndex,currntPlayer) {  
+    changeBackground: function (squareIndex) {  
         if (currntPlayer=="x"){                                         
             document.getElementById(squareIndex).style.backgroundImage="url(css/img/X.jpg)";
         } 
@@ -29,7 +30,7 @@ var crosses = {
         }
      },
 
-    defineSquare:function(squareIndex,currntPlayer){
+    defineSquare:function(squareIndex){
         squares[squareIndex].type = currntPlayer;          
         squares[squareIndex].hasntUsed = false;  
     },
@@ -98,7 +99,7 @@ var crosses = {
         }
     },
 
-    changePlayerTurn:function(currntPlayer){
+    changePlayerTurn:function(){
         if (currntPlayer === "o"){
             return  currntPlayer = "x";
         }else{
@@ -106,14 +107,14 @@ var crosses = {
         }
     },
 
-    init: function(currntPlayer){
+    init: function(){
         $(".default").each(function(squareIndex) {
             
             document.getElementById(squareIndex).onclick = function() {
                 if (squares[squareIndex].hasntUsed == true){   
                     crosses.emptySqureClick (squareIndex,currntPlayer); 
                     crosses.checkIfGameOver(currntPlayer);
-                    currntPlayer =  crosses.changePlayerTurn(currntPlayer);
+                    currntPlayer =  crosses.changePlayerTurn();
                 }
             };
             
@@ -124,7 +125,7 @@ var crosses = {
 };
  
 $(document).ready(function(){
-        var currntPlayer = "x";
-        crosses.init(currntPlayer);   
+       
+    crosses.init();   
 });
 
